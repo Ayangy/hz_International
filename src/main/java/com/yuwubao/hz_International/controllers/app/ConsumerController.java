@@ -35,13 +35,13 @@ public class ConsumerController {
      * 发送短信验证码
      */
     @GetMapping("/getSMSCaptcha")
-    public RestApiResponse<Boolean> getSMSCaptcha(@RequestParam String mobile) {
-        RestApiResponse<Boolean> result = new RestApiResponse<Boolean>();
+    public RestApiResponse<String> getSMSCaptcha(@RequestParam String mobile) {
+        RestApiResponse<String> result = new RestApiResponse<String>();
         try {
             String verifyCode = String.valueOf(new Random().nextInt(899999) + 100000);
             SendSmsResponse sendSmsResponse = SMSUtil.sendSms(mobile, verifyCode);
             if(sendSmsResponse.getCode() != null && sendSmsResponse.getCode().equals("OK")) {
-                result.successResponse(Const.SUCCESS, true, "获取验证码成功");
+                result.successResponse(Const.SUCCESS, verifyCode, "获取验证码成功");
                 return result;
             }
             result.failedApiResponse(Const.FAILED, "获取验证码失败");
